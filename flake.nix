@@ -20,6 +20,7 @@
           pkgs.glibc
           pkgs.libgcc
           pkgs.valgrind
+          pkgs.gdb
         ];
       };
     };
