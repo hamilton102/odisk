@@ -6,13 +6,17 @@
 #define MAX_HEADER_LEN 256
 #define MAX_LINE_LEN 256
 
-enum Token {
-  /* headers */
-  LEFT_BRACKET = '[', RIGHT_BRACKET = ']',
+/* TOKENS */
 
-  /* main config tokens */
-  EQUAL = '=', SEMICOLON = ';', QUOTE = '"'
-};
+/* Headers */
+#define LEFT_BRACKET '['
+#define RIGHT_BRACKET ']'
+
+/* Key/Value tokens */
+#define EQUALS '='
+#define QUOTE '"'
+#define NEWLINE '\n'
+#define EOL '\0'
 
 struct ini {
   /* key/value pair */
@@ -22,40 +26,44 @@ struct ini {
 };
 
 struct ini* parse_line(char* input) {
-  struct ini* pair;
-  int count, buf_count = 0;
+  printf("Start of function parse_line\n");
+  struct ini* pair = malloc(sizeof(struct ini));
+  if (pair == NULL) {
+    error("Malloc failed\n");
+  }
+
+  int count = 0, buf_count = 0;
   char current = input[count];
   char header_buf[MAX_HEADER_LEN];
   char line_buf[MAX_LINE_LEN];
-  while(current != '\n' && current != '\0') {
+  while(current != NEWLINE && current != EOL) {
+    printf("start of while loop \n");
     /* this is where we'll actually parse the tokens out */
-    switch(current) {
-      case LEFT_BRACKET:
+
+    /* First, parse headers */
+    if (current == LEFT_BRACKET) {
         /* increment the left bracket */
+        printf("count is: %d\n", count);
         ++count;
+        current = input[count];
         while (current != RIGHT_BRACKET) {
           if (current == '\n'|| current == '\0') {
             error("Unclosed character [!");
           }
-          /* assume until right bracket that it all goes to one header */
-          header_buf[buf_count] = current;
-          ++count;
-          ++buf_count;
-          current = input[count];
-        }
-        pair -> header = strdup(header_buf);
-        break;
-      case RIGHT_BRACKET:
-        /* right bracket without a left bracket is an error */
-        error("Unopened character ]!");
-        break;
-      case ' ':
-        /* we just want to ignore whitespace */
-        break;
-      default:
-        /* by default, no behavior should happen */
-        /* It should break if a character is left unclosed or unopened */
-        break;
+        /* assume until right bracket that it all goes to one header */
+        header_buf[buf_count] = current;
+        ++count;
+        ++buf_count;
+        current = input[count];
+          }
+      printf("returning header\n");
+      header_buf[buf_count] = EOL;
+      pair -> header = strdup(header_buf);
+      }
+    else if (current == RIGHT_BRACKET)
+    {
+      /* right bracket without a left bracket is an error */
+      error("Unopened character ]!");
     }
     ++count;
     current = input[count];
