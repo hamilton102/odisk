@@ -3,41 +3,32 @@
 #include <string.h>
 #include "parse.h"
 
-#define MAX_HEADER_LEN 256
-#define MAX_LINE_LEN 256
-
 /* TOKENS */
 
 /* Headers */
 #define LEFT_BRACKET '['
 #define RIGHT_BRACKET ']'
 
-/* Key/Value tokens */
+/* key/value tokens */
 #define EQUALS '='
 #define QUOTE '"'
 #define NEWLINE '\n'
 #define EOL '\0'
 
 struct ini {
-  /* key/value pair */
   char* header;
   char* key;
   char* value;
 };
 
+/* take in some character input, parse the line out into struct */
 struct ini* parse_line(char* input) {
   struct ini* pair = malloc(sizeof(struct ini));
-  if (pair == NULL) {
-    error("Malloc failed\n");
-  }
-
   int count = 0, buf_count = 0;
   char current = input[count];
   char header_buf[MAX_HEADER_LEN];
   char line_buf[MAX_LINE_LEN];
   while(current != NEWLINE && current != EOL) {
-    /* this is where we'll actually parse the tokens out */
-
     /* First, parse headers */
     if (current == LEFT_BRACKET) {
         /* increment the left bracket */
@@ -58,7 +49,6 @@ struct ini* parse_line(char* input) {
       }
     else if (current == RIGHT_BRACKET)
     {
-      /* right bracket without a left bracket is an error */
       error("Unopened character ]!");
     }
 
@@ -71,7 +61,6 @@ struct ini* parse_line(char* input) {
       pair -> key = strdup(line_buf);
 
       /* reset buf count and current string line */
-
       buf_count = 0;
       strcpy(line_buf, "");
 
@@ -99,19 +88,7 @@ struct ini* parse_line(char* input) {
   return pair;
 }
 
-char* read_line(FILE* fd)
-{
-  
-}
-
 void error(char* input) {
   printf("ERROR: %s\n", input);
   exit(1);
-}
-
-int main(void) {
-  FILE* fd = fopen("config.ini", "r");
-  struct ini* ini = parse_line();
-  free(ini -> header);
-  return 0;
 }

@@ -1,5 +1,5 @@
-#ifndef PARSE_H
-#define PARSE_H
+#ifndef CONFIG_H
+#define CONFIG_H
 
 #ifndef MAX_LINE_LEN
 #define MAX_LINE_LEN 256
@@ -11,8 +11,6 @@
 
 #include <stdio.h>
 
-struct ini* parse_line(char* input);
-
-void error(char* input);
+void parse_config(FILE* input_config);
 
 #endif

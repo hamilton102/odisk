@@ -20,15 +20,12 @@ int parse_time(const char* amount) {
     /* honestly anything more than a day is kinda goofy, just have it check every 
       5-10 seconds like a normal person */
     default:
-      return value * -1;
+      printf("The value of time cannot be parsed. Specify {x}s, {x}m, {x}h, or {x}d.");
+      exit(1);
   }
   return value;
 }
 
 void run_timer(const int time) {
-  if (time <= 0) {
-      printf("The value of time cannot be less than or equal to 0.");
-      exit(1);
-    }
   sleep(time);
 }
