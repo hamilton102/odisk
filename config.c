@@ -38,6 +38,13 @@ void parse_config(FILE* input_config) {
   free(ini);
 }
 
+char* read_from_directory() {
+  char dirs[MAX_DIRECTORY_WATCH_LEN];
+
+
+  return dirs;
+}
+
 int main(void) {
   return 0;
 }
