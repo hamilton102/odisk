@@ -11,6 +11,12 @@
 
 #include <stdio.h>
 
+struct ini {
+  char* header;
+  char* key;
+  char* value;
+};
+
 struct ini* parse_line(char* input);
 
 void error(char* input);

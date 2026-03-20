@@ -7,19 +7,12 @@
 #define DEFAUlT_CONFIG_LINUX '/config/odisk.ini'
 #define DEFAULT_CONFIG_WIN '\\config\odisk.ini'
 
-/* should really not be duplicated across parse.c and config.c */
-struct ini {
-  char* header;
-  char* key;
-  char* value;
-};
-
 /* open file, do logic to extrapolate headers and key/values, store them in struct */
-void parse_config(FILE* input_config) {
+struct ini* parse_config(char* input_config_path) {
   char str[MAX_LINE_LEN];
   struct ini* ini_buf;
   struct ini* ini = malloc(sizeof(struct ini));
-  FILE* fd = fopen("test.ini", "r");
+  FILE* fd = fopen(input_config_path, "r");
   if (fd == NULL) {
     error("Config file not able to be opened!");
   }
@@ -35,17 +28,5 @@ void parse_config(FILE* input_config) {
   }
   fclose(fd);
   free(ini_buf);
-  free(ini);
+  return ini;
 }
-
-char* read_from_directory() {
-  char dirs[MAX_DIRECTORY_WATCH_LEN];
-
-
-  return dirs;
-}
-
-int main(void) {
-  return 0;
-}
-
