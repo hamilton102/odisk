@@ -15,12 +15,6 @@
 #define NEWLINE '\n'
 #define EOL '\0'
 
-struct ini {
-  char* header;
-  char* key;
-  char* value;
-};
-
 /* take in some character input, parse the line out into struct */
 struct ini* parse_line(char* input) {
   struct ini* pair = malloc(sizeof(struct ini));

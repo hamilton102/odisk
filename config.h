@@ -15,7 +15,7 @@
 
 #include <stdio.h>
 
-void parse_config(FILE* input_config);
+struct ini* parse_config(char* input_config);
 
 char* read_from_directory();
 
